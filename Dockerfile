@@ -10,8 +10,12 @@ COPY package*.json ./
 # Install all dependencies (including dev deps for build)
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy source code (need public dir and src for build)
+COPY public ./public
+COPY src ./src
+COPY tsconfig.json ./
+COPY .eslintrc.json ./
+COPY .prettierrc ./
 
 # Build React app
 RUN npm run build
