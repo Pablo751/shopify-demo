@@ -1,8 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+// Get dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const SHOPIFY_SHOP_URL = process.env.SHOPIFY_SHOP_URL;
 const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
@@ -15,6 +21,9 @@ console.log('TOKEN:', SHOPIFY_ACCESS_TOKEN ? SHOPIFY_ACCESS_TOKEN.substring(0, 1
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Manual proxy handler
 app.use('/api/shopify', async (req, res) => {
@@ -63,8 +72,9 @@ app.use('/api/shopify', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Manual Proxy Active');
+// Serve React app for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3001;
