@@ -23,7 +23,8 @@
     "start:proxy": "node manual-proxy.js",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix"
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "deploy:railway": "./railway-deploy.sh"
   },
   "eslintConfig": {
     "extends": [
