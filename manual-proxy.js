@@ -91,13 +91,14 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', proxy: 'Active' });
 });
 
-// Serve React app for all non-API routes (must be last)
-app.get('*', (req, res) => {
-  // Check if it's an API route that shouldn't serve the React app
+// Catch-all handler for React app (must be last)
+app.use((req, res, next) => {
+  // Skip API routes
   if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
+    return next();
   }
   
+  // Serve React app for all other routes
   const indexPath = path.join(__dirname, 'build', 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
