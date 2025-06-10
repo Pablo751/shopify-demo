@@ -30,17 +30,11 @@ export class DemoShopifyApiService {
   async fetchOrders(startDate: string, endDate: string): Promise<Order[]> {
     await this.delay(2500);
 
-    // For demo purposes, return all orders if the date range includes our demo dates
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const demoStart = new Date('2024-01-15');
-    const demoEnd = new Date('2024-01-17');
-
-    // Check if the requested date range overlaps with our demo date range
-    if (start <= demoEnd && end >= demoStart) {
-      return DEMO_ORDERS;
-    }
-
-    return [];
+    // For demo purposes, always return demo orders regardless of date range
+    // In a real demo, we want to show functionality even with arbitrary dates
+    console.log(`Demo API: Fetching orders for date range ${startDate} to ${endDate}`);
+    console.log(`Demo API: Returning ${DEMO_ORDERS.length} demo orders (ignoring date range for demo purposes)`);
+    
+    return DEMO_ORDERS;
   }
 } 
